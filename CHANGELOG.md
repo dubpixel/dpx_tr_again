@@ -7,31 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [0.1.1] - 2026-11-01
+
 ### Added
-- 
+- MIT license (commercial use allowed, attribution required)
+- `VERSION` file
 
 ### Changed
-- 
-
-### Deprecated
-- 
-
-### Removed
-- 
-
-### Fixed
-- 
-
-### Security
-- 
+- Launcher opens the highest-versioned `Tessera Remote*.app` in `/Applications` instead of a hardcoded 3.5.2
+- Launcher shows an alert if no Tessera Remote is installed
+- Rebuilt `TesseraRemoteAgain.zip` with `ditto` (no `__MACOSX` junk)
 
 ---
 
-## [0.1.0] - YYYY-MM-DD
+## [0.1.0] - 2026-11-01
 
 ### Added
-- Initial release
-- Core functionality implementation
+- Initial import: launcher script and `.app` wrapper (hardcoded to Tessera Remote 3.5.2)
 
 ---
 
