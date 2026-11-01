@@ -4,112 +4,44 @@ This document provides operational directives for AI coding assistants (GitHub C
 
 ---
 
-## PROJECT: [Project Name]
+## PROJECT: dpx_tr_again
 
-**Instructions for customizing this section:**
-Replace the placeholders below with your project's specific information. Remove subsections that don't apply. This template is intentionally verbose — prune what you don't need.
-
-**Status:** [e.g., v0.1.0 complete (2026-06-05) ✅]  
-**Branch:** [e.g., `feature/core-app-implementation`]  
-**Version File:** [e.g., `VERSION` (currently 0.1.0)]
+**Status:** v0.2.1 (2026-11-01) ✅  
+**Branch:** `docs/readme-about`  
+**Version File:** `VERSION` (currently 0.2.1)
 
 ### Architecture (2-minute summary)
 
-[One-paragraph overview: what this project does, core tech, how it works]
-
-**Example:** "Browser-based monitoring tool for Phabrix QX waveform monitors. Pure vanilla JS (no frameworks, no build step, no CDN). Connects to QX REST API on port 8080, polls status/logs every 2-5s, stores settings in localStorage. Works offline in airgapped broadcast facilities."
+macOS launcher for Brompton's Tessera Remote. macOS will not start a second copy of a running app, so the launcher uses `open -n` to force a new instance. It finds the highest-versioned `/Applications/Tessera Remote*.app` (`sort -V`) so it survives upgrades. Plain POSIX `sh`, no dependencies.
 
 | Component | Tech/Location | Purpose | Notes |
 |-----------|---------------|---------|-------|
-| [Component 1] | [Tech] / `path/` | [What it does] | [Key details] |
-| [Component 2] | [Tech] / `path/` | [What it does] | [Key details] |
-| [Component 3] | [Tech] / `path/` | [What it does] | [Key details] |
-| [Reference docs] | [Format] / `path/` | [What it is] | **Source of truth for [topic]** |
+| Launcher script | `sh` / `src/TesseraRemoteAgain` | Pick latest Tessera Remote, `open -n` it | Source of truth; shows alert if none installed |
+| App wrapper | `src/TesseraRemoteAgain.app` | Double-clickable bundle | `Contents/MacOS/TesseraRemoteAgain` must stay identical to the script; no `Info.plist` |
+| Release zip | `src/TesseraRemoteAgain.zip` | Distributable | Rebuild with `ditto -c -k --sequesterRsrc --keepParent` after any script change |
+| Site | Jekyll / `.github/workflows/pages.yml` | GitHub Pages from README | Deploys on push to `main` |
 
 ### Agent Rules (for this repo)
 
-**Before ANY code change:**
-1. Work from `[main/master]` branch; create feature branch: `feature/brief-description`
-2. Bump VERSION file per semantic versioning (AGENTS.md §1)
-3. Create git commit for version bump, tag it: `git tag vX.Y.Z`
-
-**While coding:**
-- [Project-specific rule or constraint]
-- [Technology requirement or restriction]
-- [Testing/validation requirement]
-- Keep changes small, test before committing
-- File header per AGENTS.md §3
-
-**When done:**
-- Update CHANGELOG.md with feature list
-- Create PR per AGENTS.md §1 template
-- [Any project-specific verification steps]
+- Branch from `main`, bump `VERSION`, tag, then change (see §1 below)
+- After editing the script, copy it into the `.app` and rebuild the zip
+- Confirm README changes with the user before committing
 
 ### Critical Constraints
 
-**MUST HAVE:**
-- ✅ [Required capability or dependency]
-- ✅ [Required technology or approach]
-- ✅ [Required compatibility or standard]
-
 **DO NOT:**
-- ❌ [Forbidden action or technology]
-- ❌ [Assumption that must be avoided]
-- ❌ [Hard-coded value or static configuration]
-- ❌ [Change that requires explicit verification]
+- ❌ Hardcode a Tessera Remote version
+- ❌ Drop `-n` from `open` (it is the whole point: multiple instances)
 
 ### Key Decisions
 
-- **[Decision Title]:** [Explanation - why this approach was chosen over alternatives]
-- **[Decision Title]:** [Rationale for architecture/design choice]
-- **[Decision Title]:** [Context for future agents]
-
-**Examples:**
-- **Dual README templates:** Hardware needs schematics/BOMs, software needs API docs - fundamentally different documentation needs
-- **No WebSocket:** QX REST API is HTTP-only. Polling is the only option.
-- **Bootstrap on connect:** Device specs vary by boot mode - auto-detect on initial connection
+- **`open -n`:** Tessera Remote is often needed several times at once; macOS blocks a second copy otherwise.
+- **`sort -V`:** plain sort ranks 3.5.2 above 3.10.0.
 
 ### Gotchas & Landmines
 
-1. **[Issue Title]:** [Description]. [Workaround or solution]. [Where to look for more info]
-2. **[Issue Title]:** [Description]. [Workaround or solution].
-3. **[Issue Title]:** [Description]. [Always check/verify X before doing Y].
-
-**Examples:**
-- **CORS issue:** API calls from `file://` origin fail. Use launch script or Python server, not direct open.
-- **Boot modes matter:** Device can boot in different modes. Different endpoints available per mode. Always auto-detect on connect.
-- **Manual is authority:** If specs seem odd, check `/docs/manual.pdf` Ch.X. Don't guess.
-
-### Common Operations
-
-**[Operation 1 - e.g., Create new project]:** `./script.sh` (interactive prompts for X/Y/Z)
-
-**[Operation 2 - e.g., Modify behavior]:** Edit `path/to/file.ext` - all logic centralized
-
-**[Operation 3 - e.g., Add components]:** Add to `path/`, update `config.ext` if special handling needed
-
-**[Operation 4 - e.g., Template processing]:**
-- [Scenario A]: `input-A.ext` → `output.ext`
-- [Scenario B]: `input-B.ext` → `output.ext`  
-- [Always]: `.git` and `.env` excluded from copy
-
-### Reference
-
-See `/CONTEXT.md` for:
-- [Extended architecture details]
-- [Module/component specifications]
-- [Data schemas or API contracts]
-
-See `/.github/CONTEXT.md` for:
-- [API endpoint reference]
-- [Configuration specifications]
-- [Testing procedures]
-
-### Development Philosophy
-
-[Optional: High-level principles for this project type]
-
-**Example:** "This is broadcast infrastructure tooling - reliability and simplicity trump features. Prefer vanilla JavaScript over frameworks. Keep dependencies minimal and auditable. Test in airgapped environments. Design for 24/7 unattended operation."
+1. **Zip junk:** `zip` adds `__MACOSX/` entries; use `ditto` as above.
+2. **Trademark:** "Tessera" is Brompton's; keep the unaffiliated disclaimer in the README.
 
 ---
 ## 0. Mid-Session Issue Triage (MANDATORY)

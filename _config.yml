@@ -1,5 +1,5 @@
-title: dpx_readme_template
-description: a readme template
+title: dpx_tr_again
+description: Run multiple instances of Tessera Remote on macOS. Launcher that opens the latest installed version with open -n.
 remote_theme: pages-themes/midnight@v0.2.0
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one

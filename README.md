@@ -10,9 +10,6 @@
 <!--search dpx_tr_again.. search & replace is COMMAND OPTION F -->
 
 <!--this is the version for software -->
-<!--todo ** add small product image thats not in a details tag -->
-<!--todo ** new software product image? Remove it? -->
-<!--igure out how to get the details tag to properly render in jekyll for gihub pages.-->
 
 
 
@@ -33,9 +30,9 @@
     <img src="images/logo.png" alt="Logo" height="120">
   </a>
 <h1 align="center">dpx_tr_again</h1>
-<h3 align="center"><i>a sassy project tag line here</i></h3>
+<h3 align="center"><i>run as many copies of Tessera Remote as you want on macOS</i></h3>
   <p align="center">
-    ...a short description to tease interest
+    A tiny macOS launcher that opens a <i>new</i> instance of the highest-versioned Tessera Remote installed, so you can run multiple copies side by side.
     <br />
      »  
      <a href="https://github.com/dubpixel/dpx_tr_again"><strong>Project Here!</strong></a>
@@ -65,7 +62,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>    
-    <li><a href="#reflection">Reflection</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -76,7 +72,13 @@
 <!-- ABOUT THE PROJECT -->
 <details>
 <summary><h3>About The Project</h3></summary>
-a lengthy description about the project that should probably be many lines. this is where you can get deep about shit and be like oh man its the best hot dog in the universe because i use the koskusko mustart!
+**What it does.** `TesseraRemoteAgain.app` looks in `/Applications` for every `Tessera Remote*.app`, picks the highest version (a real version sort, so 3.10.0 beats 3.5.2), and launches it with `open -n`. If no copy is installed it shows an alert instead of failing silently.
+
+**Why.** [Tessera Remote](https://www.bromptontech.com/) (Brompton Technology's LED processor control app) is often needed more than once at the same time, for example to talk to several processors or systems at once. macOS normally refuses to start a second copy of an app that is already running. `open -n` forces a fresh instance, and this launcher wraps that in a double-clickable app that always targets the newest installed version, so it keeps working after you upgrade Tessera Remote and you never edit a path by hand.
+
+*Unofficial; not affiliated with or endorsed by Brompton Technology. "Tessera" is their trademark.*
+
+**Keywords:** run multiple instances of Tessera Remote on macOS, open second copy of Tessera Remote, Brompton Tessera multi-instance launcher, Mac open -n, LED processor control.
 </br>
 
 *author(s): // www.dubpixel.tv  - i@dubpixel.tv | other authors* 
@@ -89,8 +91,11 @@ a lengthy description about the project that should probably be many lines. this
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With 
- 
- * 
+
+ * POSIX `sh` (no dependencies, no build step)
+ * macOS `open -n` and `osascript`
+ * `sort -V` for version ordering
+ * GitHub Pages (Jekyll) for the project site
 
 <!--
  * [![KiCad][KiCad.org]][KiCad-url]
@@ -113,33 +118,30 @@ a lengthy description about the project that should probably be many lines. this
 ## Getting Started
 
   ### Prerequisites
-  * 
+  * macOS
+  * At least one `Tessera Remote*.app` in `/Applications`
+
   ### Installation
 
-  1. 
+  1. Download `src/TesseraRemoteAgain.zip` and unzip it
+  2. Drag `TesseraRemoteAgain.app` wherever you want it (Dock, Desktop, Stream Deck)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-1. <!-- Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Double-click `TesseraRemoteAgain.app`. Each launch opens another independent copy of the newest installed Tessera Remote. Launch it again for as many copies as you need.
 
-_For more examples, please refer to the [Documentation](https://example.com)_-->
-<!-- REFLECTION -->
-## Reflection
+Install a newer Tessera Remote and the launcher picks it up automatically.
 
-* what did we learn? 
-  - _x_
-* what do we like/hate?
-  - _y_
-* what would/could we do differently?
-  - _z_
   <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-    - [ ] Nested Feature
+- [x] Open a new instance of Tessera Remote (`open -n`)
+- [x] Always pick the highest installed version (v0.1.1)
+- [x] Alert when Tessera Remote is not installed (v0.1.1)
+- [x] Project site on GitHub Pages (v0.2.0)
 
 See the [open issues](https://github.com/dubpixel/dpx_tr_again/issues) for a full list of proposed features (and known issues).
 
@@ -164,7 +166,7 @@ Don't forget to give the project a star! Thanks again!
 
 <!-- LICENSE -->
 ## License
-Distributed under the [LICENSE_TYPE] License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. Commercial use is allowed; keep the copyright notice and attribution. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
@@ -192,7 +194,7 @@ Distributed under the [LICENSE_TYPE] License. See `LICENSE.txt` for more informa
 [issues-shield]: https://img.shields.io/github/issues/dubpixel/dpx_tr_again.svg?style=flat-square
 [issues-url]: https://github.com/dubpixel/dpx_tr_again/issues
 [license-shield]: https://img.shields.io/github/license/dubpixel/dpx_tr_again.svg?style=flat-square
-[license-url]: https://github.com/dubpixel/dpx_tr_again/blob/main/LICENSE.txt
+[license-url]: https://github.com/dubpixel/dpx_tr_again/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/jfleitell
 [product-front]: images/front.png
