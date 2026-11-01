@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.1] - 2026-11-01
+
+### Changed
+- README explains what the launcher does and why (multiple Tessera Remote instances on macOS), with search keywords
+- `AGENTS.md` PROJECT block filled in
+- Site title and description in `_config.yml`
+
+---
+
 ## [0.2.0] - 2026-11-01
 
 ### Added
