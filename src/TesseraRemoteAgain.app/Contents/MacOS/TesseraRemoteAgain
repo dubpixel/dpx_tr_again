@@ -1,0 +1,2 @@
+#!/bin/sh
+  open -n '/Applications/Tessera Remote 3.5.2.app'
