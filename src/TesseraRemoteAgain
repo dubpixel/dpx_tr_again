@@ -1,2 +1,27 @@
 #!/bin/sh
-  open -n '/Applications/Tessera Remote 3.5.2.app'
+# ================================================================================
+# SHELL SCRIPT - TESSERA REMOTE LAUNCHER
+# ================================================================================
+# PROJECT: dpx_tr_again
+# ================================================================================
+#
+# File: TesseraRemoteAgain
+# Purpose: Open the highest-versioned "Tessera Remote*.app" in /Applications.
+# Dependencies: macOS (open, osascript), sort -V
+#
+# CHANGE LOG: see CHANGELOG.md
+#
+# ================================================================================
+
+# sort -V is a version sort, so 3.10.0 ranks above 3.5.2 (plain sort gets this wrong).
+APP=$(ls -d /Applications/Tessera\ Remote*.app 2>/dev/null | sort -V | tail -1)
+
+# Show a dialog rather than failing silently: when launched from the .app
+# wrapper there is no terminal to see an error in.
+if [ -z "$APP" ]; then
+  osascript -e 'display alert "Tessera Remote not found in /Applications"'
+  exit 1
+fi
+
+# -n opens a new instance even if one is already running.
+open -n "$APP"
