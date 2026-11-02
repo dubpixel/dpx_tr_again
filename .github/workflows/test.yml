@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-13, macos-14, macos-15]
+        os: [macos-14, macos-15]   # macos-13 (Intel) runners sit queued indefinitely
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -125,3 +125,65 @@ jobs:
         with:
           name: dist-${{ matrix.os }}
           path: dist/*.dmg
+
+  # Real-app smoke test: download Brompton's official Tessera Remote 3.5.2 DMG
+  # (not redistributed; fetched fresh/cached per run), install it, and prove the
+  # launcher opens two simultaneous instances of the REAL app.
+  real-tessera:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15-intel, macos-15]   # Intel = native; arm64 = via Rosetta (app is x86_64 only)
+    runs-on: ${{ matrix.os }}
+    env:
+      TESSERA_DMG_URL: https://dl.bromptontech.com/tessera/management_app/Tessera_Remote_v3.5.2_installer.dmg
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Environment
+        run: sw_vers; uname -m
+
+      - name: Rosetta (Apple Silicon only; the app is x86_64)
+        if: runner.arch == 'ARM64'
+        run: softwareupdate --install-rosetta --agree-to-license
+
+      - name: Cache Tessera Remote DMG
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/tessera.dmg
+          key: tessera-remote-3.5.2-dmg
+
+      - name: Download Tessera Remote DMG
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: curl -fL --retry 3 -o ~/tessera.dmg "$TESSERA_DMG_URL"
+
+      - name: Install the real app into ~/Applications
+        run: |
+          M="$RUNNER_TEMP/tmnt"
+          hdiutil attach -nobrowse -readonly -mountpoint "$M" ~/tessera.dmg
+          mkdir -p "$HOME/Applications"
+          ditto "$M/Tessera Remote 3.5.2.app" "$HOME/Applications/Tessera Remote 3.5.2.app"
+          hdiutil detach -quiet "$M"
+          ls -d "$HOME/Applications/"Tessera*
+
+      - name: Install the launcher
+        run: sh install.sh "$RUNNER_TEMP/inst"
+
+      - name: Launcher opens two simultaneous instances of the REAL app
+        run: |
+          L="$RUNNER_TEMP/inst/TesseraRemoteAgain.app/Contents/MacOS/TesseraRemoteAgain"
+          "$L"; sleep 2; "$L"
+          for i in $(seq 1 30); do
+            n=$(pgrep -f 'Tessera Remote 3.5.2.app/Contents/MacOS/tessera_remote' | wc -l | tr -d ' ')
+            [ "$n" -ge 2 ] && break
+            sleep 1
+          done
+          echo "--- running instances: $n"
+          pgrep -fl 'tessera_remote' || true
+          # leave them running a few seconds to catch immediate crashes
+          sleep 5
+          n=$(pgrep -f 'Tessera Remote 3.5.2.app/Contents/MacOS/tessera_remote' | wc -l | tr -d ' ')
+          echo "--- still running after 5s: $n"
+          test "$n" -ge 2
+          pkill -f 'tessera_remote' || true
