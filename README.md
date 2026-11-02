@@ -123,12 +123,19 @@
 
   ### Installation
 
-  1. Download `src/TesseraRemoteAgain.zip` and unzip it
-  2. Drag `TesseraRemoteAgain.app` wherever you want it (Dock, Desktop, Stream Deck)
+  **Option A: build it locally (recommended).** Nothing is downloaded as an app, so there is no transfer damage and macOS never quarantines it. It installs to `~/Applications`:
+
+  ```sh
+  curl -fsSL https://raw.githubusercontent.com/dubpixel/dpx_tr_again/main/install.sh | sh
+  ```
+
+  **Option B: DMG.** Download `TesseraRemoteAgain-vX.Y.Z.dmg` from the [Releases page](https://github.com/dubpixel/dpx_tr_again/releases), open it and drag the app onto *Applications*. (Downloaded apps are quarantined; see below.)
+
+  Then drag the app wherever you want it (Dock, Desktop, Stream Deck).
 
   ### If macOS blocks it
 
-  The app is not signed or notarized, so a copy that was emailed or downloaded is quarantined and macOS may say it "can't be opened" or is "damaged". Either:
+  This only applies to Option B or any copy that was emailed or downloaded. The app is not signed or notarized, so it is quarantined and macOS may say it "can't be opened" or is "damaged". Either:
 
   * open **System Settings → Privacy & Security**, scroll down and click **Open Anyway**, or
   * run this in Terminal (adjust the path):

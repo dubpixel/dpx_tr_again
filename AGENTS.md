@@ -18,13 +18,14 @@ macOS launcher for Brompton's Tessera Remote. macOS will not start a second copy
 |-----------|---------------|---------|-------|
 | Launcher script | `sh` / `src/TesseraRemoteAgain` | Pick latest Tessera Remote, `open -n` it | Source of truth; shows alert if none installed |
 | App wrapper | `src/TesseraRemoteAgain.app` | Double-clickable bundle | `Contents/MacOS/TesseraRemoteAgain` must stay identical to the script; keep `Info.plist` version in sync with `VERSION` |
-| Release zip | `src/TesseraRemoteAgain.zip` | Distributable | Rebuild with `ditto -c -k --sequesterRsrc --keepParent` after any script change |
+| Build script | `sh` / `build.sh` | Builds `dist/` `.app`, `.zip`, `.dmg` from `src/TesseraRemoteAgain` + `VERSION` + `assets/AppIcon.icns`; refreshes `src/*.app` | `dist/` is git-ignored; attach the `.dmg`/`.zip` to a GitHub Release |
+| Installer | `sh` / `install.sh` | Builds the `.app` locally into `~/Applications` (no quarantine) | Embeds the launcher; `build.sh` fails if it drifts from `src/TesseraRemoteAgain` or `VERSION` |
 | Site | Jekyll / `.github/workflows/pages.yml` | GitHub Pages from README | Deploys on push to `main` |
 
 ### Agent Rules (for this repo)
 
 - Branch from `main`, bump `VERSION`, tag, then change (see §1 below)
-- After editing the script, copy it into the `.app` and rebuild the zip
+- After editing `src/TesseraRemoteAgain`, re-embed it in `install.sh` (between `LAUNCHER_EOF` markers), bump `VERSION` in both, and run `./build.sh`
 - Confirm README changes with the user before committing
 
 ### Critical Constraints
@@ -41,7 +42,7 @@ macOS launcher for Brompton's Tessera Remote. macOS will not start a second copy
 ### Gotchas & Landmines
 
 1. **Gatekeeper:** the app is unsigned/unnotarized, so emailed copies are quarantined; the README documents `Open Anyway` / `xattr -dr com.apple.quarantine`.
-2. **Zip junk:** `zip` adds `__MACOSX/` entries; use `ditto` as above.
+2. **Zip metadata:** `ditto` still adds small `__MACOSX/` metadata entries; harmless. Don't commit zips/dmgs.
 3. **Trademark:** "Tessera" is Brompton's; keep the unaffiliated disclaimer in the README.
 
 ---
