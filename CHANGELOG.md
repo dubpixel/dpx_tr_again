@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.0] - 2026-11-02
+
+### Added
+- `install.sh`: builds the app locally into `~/Applications` (no transfer damage, no Gatekeeper quarantine); runnable via `curl | sh`
+- `build.sh`: builds the `.app`, `.zip` and `.dmg` (drag-to-Applications) into git-ignored `dist/`
+- `assets/AppIcon.icns` (extracted from the original app's custom icon) used by the app via `Info.plist`
+
+### Removed
+- `src/TesseraRemoteAgain.zip` from the repo; the zip/dmg are now Release assets
+
+---
+
 ## [0.2.2] - 2026-11-02
 
 ### Added
