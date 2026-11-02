@@ -6,9 +6,9 @@ This document provides operational directives for AI coding assistants (GitHub C
 
 ## PROJECT: dpx_tr_again
 
-**Status:** v0.2.1 (2026-11-01) ✅  
-**Branch:** `docs/readme-about`  
-**Version File:** `VERSION` (currently 0.2.1)
+**Status:** v0.2.2 (2026-11-02) ✅  
+**Branch:** `fix/portability`  
+**Version File:** `VERSION` (currently 0.2.2)
 
 ### Architecture (2-minute summary)
 
@@ -17,7 +17,7 @@ macOS launcher for Brompton's Tessera Remote. macOS will not start a second copy
 | Component | Tech/Location | Purpose | Notes |
 |-----------|---------------|---------|-------|
 | Launcher script | `sh` / `src/TesseraRemoteAgain` | Pick latest Tessera Remote, `open -n` it | Source of truth; shows alert if none installed |
-| App wrapper | `src/TesseraRemoteAgain.app` | Double-clickable bundle | `Contents/MacOS/TesseraRemoteAgain` must stay identical to the script; no `Info.plist` |
+| App wrapper | `src/TesseraRemoteAgain.app` | Double-clickable bundle | `Contents/MacOS/TesseraRemoteAgain` must stay identical to the script; keep `Info.plist` version in sync with `VERSION` |
 | Release zip | `src/TesseraRemoteAgain.zip` | Distributable | Rebuild with `ditto -c -k --sequesterRsrc --keepParent` after any script change |
 | Site | Jekyll / `.github/workflows/pages.yml` | GitHub Pages from README | Deploys on push to `main` |
 
@@ -40,8 +40,9 @@ macOS launcher for Brompton's Tessera Remote. macOS will not start a second copy
 
 ### Gotchas & Landmines
 
-1. **Zip junk:** `zip` adds `__MACOSX/` entries; use `ditto` as above.
-2. **Trademark:** "Tessera" is Brompton's; keep the unaffiliated disclaimer in the README.
+1. **Gatekeeper:** the app is unsigned/unnotarized, so emailed copies are quarantined; the README documents `Open Anyway` / `xattr -dr com.apple.quarantine`.
+2. **Zip junk:** `zip` adds `__MACOSX/` entries; use `ditto` as above.
+3. **Trademark:** "Tessera" is Brompton's; keep the unaffiliated disclaimer in the README.
 
 ---
 ## 0. Mid-Session Issue Triage (MANDATORY)

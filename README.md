@@ -119,12 +119,25 @@
 
   ### Prerequisites
   * macOS
-  * At least one `Tessera Remote*.app` in `/Applications`
+  * At least one `Tessera Remote*.app` in `/Applications` or `~/Applications`
 
   ### Installation
 
   1. Download `src/TesseraRemoteAgain.zip` and unzip it
   2. Drag `TesseraRemoteAgain.app` wherever you want it (Dock, Desktop, Stream Deck)
+
+  ### If macOS blocks it
+
+  The app is not signed or notarized, so a copy that was emailed or downloaded is quarantined and macOS may say it "can't be opened" or is "damaged". Either:
+
+  * open **System Settings → Privacy & Security**, scroll down and click **Open Anyway**, or
+  * run this in Terminal (adjust the path):
+
+    ```sh
+    xattr -dr com.apple.quarantine ~/Downloads/TesseraRemoteAgain.app
+    ```
+
+  If you get a "Tessera Remote not found" alert, the app isn't in `/Applications` or `~/Applications`, or its name doesn't start with `Tessera Remote`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
