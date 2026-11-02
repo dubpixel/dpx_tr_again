@@ -62,6 +62,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>    
+    <li><a href="#how-it-works-make-it-yourself">How it works (make it yourself)</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -154,6 +155,56 @@
 Double-click `TesseraRemoteAgain.app`. Each launch opens another independent copy of the newest installed Tessera Remote. Launch it again for as many copies as you need.
 
 Install a newer Tessera Remote and the launcher picks it up automatically.
+
+<!-- HOW IT WORKS -->
+## How it works (make it yourself)
+
+**The concept.** A macOS `.app` is just a folder. If it contains an executable file at `Contents/MacOS/<name>`, double-clicking the app runs that file, and the file can be a plain shell script. That's all this project is: a shell script wearing an app costume so you can double-click it, pin it to the Dock or put it on a Stream Deck.
+
+**The simplest possible version** (hardcoded to one version of Tessera Remote):
+
+```sh
+mkdir -p ~/Applications/MyLauncher.app/Contents/MacOS
+
+cat > ~/Applications/MyLauncher.app/Contents/MacOS/MyLauncher <<'EOF'
+#!/bin/sh
+open -n '/Applications/Tessera Remote 3.5.2.app'
+EOF
+
+chmod +x ~/Applications/MyLauncher.app/Contents/MacOS/MyLauncher
+```
+
+That is the whole trick:
+
+* `#!/bin/sh` on the first line tells macOS how to run the file.
+* `open -n` opens a **new** instance even when the app is already running. This is what lets you have multiple copies, which macOS refuses to do otherwise.
+* `chmod +x` (plus, not minus) marks the file executable. Without it, double-clicking does nothing.
+* Name the script the same as the `.app` folder.
+
+It worked for the author without anything else, but other Macs can be fussier. A minimal `Contents/Info.plist` makes the bundle behave more reliably:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0"><dict>
+  <key>CFBundleExecutable</key><string>MyLauncher</string>
+  <key>CFBundleIdentifier</key><string>com.example.MyLauncher</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+</dict></plist>
+```
+
+**So why is there more code in this repo?** Everything beyond `open -n` exists to make the hardcoded path and version number go away:
+
+| Piece | What it's for |
+|-------|---------------|
+| Search `/Applications` and `~/Applications` | You never type or edit the location |
+| `sort -V` version pick | When Tessera Remote updates, the launcher opens the newest one automatically (3.10.0 beats 3.5.2) |
+| "Not found" alert | A clear message instead of a silent failure |
+| `install.sh` | Builds the app on *your* Mac so there is no download, no transfer damage and no quarantine |
+| `build.sh`, icon, DMG | Packaging for releases; not needed to use or copy the idea |
+
+If you only ever run one fixed version, the six-line version above is enough.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
   <!-- ROADMAP -->
 ## Roadmap

@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.2] - 2026-11-02
+
+### Added
+- GitHub Actions workflow that builds and tests the app on macOS 14 and 15 (Apple Silicon) using fake Tessera Remote apps, plus a smoke test that downloads the real Tessera Remote 3.5.2 DMG and checks two simultaneous instances open (Intel natively, Apple Silicon via Rosetta). Fake-app checks: picks the highest version, opens multiple instances, shows the not-found alert, DMG contents
+
+### Changed
+- README explains the "shell script inside an app" concept, how to build the app by hand, and what the extra code adds (location + version arbitration)
+
+### Fixed
+- `src/TesseraRemoteAgain.app` Info.plist version and `AGENTS.md` version line were out of sync
+
+---
+
 ## [0.3.1] - 2026-11-02
 
 ### Changed

@@ -18,7 +18,7 @@
 # ================================================================================
 set -eu
 
-VERSION="0.3.1"                 # keep in sync with VERSION (build.sh checks)
+VERSION="0.3.2"                 # keep in sync with VERSION (build.sh checks)
 DEST="${1:-$HOME/Applications}"
 APP="$DEST/TesseraRemoteAgain.app"
 ICON_URL="https://raw.githubusercontent.com/dubpixel/dpx_tr_again/v${VERSION}/assets/AppIcon.icns"
