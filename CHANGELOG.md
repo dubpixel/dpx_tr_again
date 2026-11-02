@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.1] - 2026-11-02
+
+### Changed
+- First GitHub Release (with `.dmg` and `.zip` assets). The `v0.3.0` tag predates the installer merge, so use v0.3.1 or later.
+
+---
+
 ## [0.3.0] - 2026-11-02
 
 ### Added
