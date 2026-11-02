@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.2] - 2026-11-02
+
+### Added
+- `Info.plist` in the `.app` bundle
+- README section on getting past Gatekeeper for emailed/downloaded copies
+
+### Changed
+- Launcher also searches `~/Applications`, and version-sorts on the app name so the folder doesn't affect which version wins
+- "Not found" alert names the folders searched
+
+---
+
 ## [0.2.1] - 2026-11-01
 
 ### Changed
