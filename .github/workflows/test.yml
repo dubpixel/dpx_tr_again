@@ -91,7 +91,7 @@ jobs:
           test "$(pgrep -f 'Tessera Remote 3.10.0.app/Contents/MacOS/fake' | wc -l)" -ge 2
           pkill -f 'Contents/MacOS/fake' || true
 
-      - name: "Not found" path shows an alert (osascript stubbed)
+      - name: Not-found path shows an alert (osascript stubbed)
         run: |
           SHIM="$RUNNER_TEMP/shim"; mkdir -p "$SHIM" "$RUNNER_TEMP/emptyhome"
           printf '#!/bin/sh\necho "ALERT: $*" > "%s/alert.log"\n' "$RUNNER_TEMP" > "$SHIM/osascript"
