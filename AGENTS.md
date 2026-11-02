@@ -6,9 +6,9 @@ This document provides operational directives for AI coding assistants (GitHub C
 
 ## PROJECT: dpx_tr_again
 
-**Status:** v0.3.1 (2026-11-02) ✅  
-**Branch:** `fix/portability`  
-**Version File:** `VERSION` (currently 0.2.2)
+**Status:** v0.3.2 (2026-11-02) ✅  
+**Branch:** `feature/macos-ci`  
+**Version File:** `VERSION` (currently 0.3.2)
 
 ### Architecture (2-minute summary)
 
